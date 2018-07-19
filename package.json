@@ -1,0 +1,15 @@
+{
+  "name": "koa2",
+  "version": "1.0.0",
+  "description": "koa",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "heyushuo",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.5.2"
+  }
+}
