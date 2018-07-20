@@ -11,34 +11,7 @@ app.use(bodyParser());
 
 
 
-
-/**
- * 数据库操作
- */
-const { mysql: config } = require('./config');
-
-
-//链接数据库
-const DB = require('knex')({
-    client: 'mysql',
-    connection: {
-        host: config.host,
-        port: config.port,
-        user: config.user,
-        password: config.pass,
-        database: config.db,
-        charset: config.char,
-        multipleStatements: true
-    }
-})
-DB.select('*').from('nideshop_goods').then(function(data){
-    //取到的数据
-    console.log(data)
-})
-/**
- * 数据库操作
- */
-
+const {mysql} = require('./mysql');
 
 
 // 参数ctx是由koa传入的封装了request和response的变量，我们可以通过它访问request和response，next是koa传入的将要处理的下一个异步函数。
@@ -61,6 +34,12 @@ DB.select('*').from('nideshop_goods').then(function(data){
 //     ctx.response.type = 'text/html'
 //     ctx.body = "<h1>hell world23m</h1>"
 // })
+
+// mysql.select('*').from("nideshop_goods").then(function(data){
+//     console.log(data)
+// })
+
+
 
 
 app.use(async (ctx, next) => {
@@ -88,7 +67,14 @@ router.get("/hello/:id", async (ctx, next) => {
 })
 router.get("/", async (ctx, next) => {
     ctx.response.type = 'text/html';
-    ctx.response.body = `<h1>我是首页</h1>`;
+    // ctx.response.body = `<h1>我是首页</h1>`;
+    const bookData= await mysql.select('*').from("nideshop_product");
+    console.log(bookData);
+    ctx.state.data = {
+        bookData,
+        msg:'success'
+      }
+    // ctx.response.body = JSON.stringify(bookData);
 })
 
 app.listen(9991)

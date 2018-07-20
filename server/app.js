@@ -4,6 +4,10 @@ const debug = require('debug')('koa-weapp-demo')
 const response = require('./middlewares/response')
 const bodyParser = require('koa-bodyparser')
 const config = require('./config')
+const cors = require('koa-cors');
+console.log
+app.use(cors());
+
 
 // DB.
 
