@@ -11,8 +11,9 @@ const controllers = require('../controllers')
 
 
 //请求的是这个接口 xxx.com/app/demo
-router.get('/demo',controllers.demo)
-
+router.get('/demo', controllers.demo)
+//swiperData
+router.get('/index/index', controllers.home.index)
 
 
 module.exports = router

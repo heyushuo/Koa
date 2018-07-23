@@ -19,7 +19,7 @@ const mapDir = d => {
     // 映射文件
     files.forEach(file => {
         if (path.extname(file) === '.js') {
-                //提取出用 ‘/' 隔开的path的最后一部分。
+            //提取出用 ‘/' 隔开的path的最后一部分。
             tree[path.basename(file, '.js')] = require(path.join(d, file))
         }
     })
@@ -27,5 +27,5 @@ const mapDir = d => {
 }
 
 // 默认导出当前文件夹下的映射
-                        //链接拼接
+//链接拼接
 module.exports = mapDir(path.join(__dirname))
