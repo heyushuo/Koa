@@ -18,10 +18,6 @@ const DB = require('knex')({
     }
 })
 
-/**
- * 数据库操作
- */
-
  module.exports={
      mysql:DB
  }
