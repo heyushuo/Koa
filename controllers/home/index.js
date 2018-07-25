@@ -10,7 +10,9 @@ module.exports = async (ctx) => {
     //类型
     const channel = await mysql('nideshop_channel').select();
     //类型
-    const newGoods = await mysql('nideshop_goods').limit(4).select();
+    const newGoods = await mysql('nideshop_goods').where({
+        "is_new": 1
+    }).limit(5).select();
     /**
      * 热门商品
      * 选择对象的列字段
@@ -19,7 +21,7 @@ module.exports = async (ctx) => {
      */
     const hotGoods = await mysql('nideshop_goods').column('id', 'name', 'list_pic_url', 'retail_price', 'goods_brief').where({
         is_hot: 1
-    }).limit(3).select();
+    }).limit(5).select();
     /**
      * 品牌列表
      */
