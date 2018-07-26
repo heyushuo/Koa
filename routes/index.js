@@ -25,7 +25,7 @@ router.get('/category/currentaction', controllers.category.index.currentAction)
 /**
  *  商品相关接口
  */
-
+router.get('/goods/detailAction', controllers.goods.index.detailAction)
 /**
  *  专题接口
  */
