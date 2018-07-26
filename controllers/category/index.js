@@ -25,7 +25,7 @@ async function indexAction(ctx) {
     "currentCategory": currentCategory
   }
 }
-
+//点击右侧分类时获取左侧对应的分类
 async function currentAction(ctx) {
   const {
     id: categoryId

@@ -12,9 +12,10 @@ const controllers = require('../controllers')
 
 //首页数据
 router.get('/index/index', controllers.home.index)
+//首页品牌制造商直供
+router.get('/brand/listaction', controllers.brand.index.listAction)
 
-
-
+router.get('/brand/detailaction', controllers.brand.index.detailAction)
 /**
  *  分类
  */
@@ -25,12 +26,12 @@ router.get('/category/currentaction', controllers.category.index.currentAction)
 /**
  *  商品相关接口
  */
-router.get('/goods/detailAction', controllers.goods.index.detailAction)
+router.get('/goods/detailaction', controllers.goods.index.detailAction)
 /**
  *  专题接口
  */
 //列表
-router.get('/topic/listAction', controllers.topic.index.listAction)
+router.get('/topic/listaction', controllers.topic.index.listAction)
 // 详情加下方四个专题推荐
-router.get('/topic/detailAction', controllers.topic.index.detailAction)
+router.get('/topic/detailaction', controllers.topic.index.detailAction)
 module.exports = router
