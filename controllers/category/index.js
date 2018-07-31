@@ -22,7 +22,6 @@ async function indexAction(ctx) {
 
   ctx.body = {
     "categoryList": data,
-    "currentCategory": currentCategory
   }
 }
 //点击右侧分类时获取左侧对应的分类
@@ -30,13 +29,18 @@ async function currentAction(ctx) {
   const {
     id: categoryId
   } = ctx.query;
+  const data = {};
   //获取分类里的子类
-  const currentCategory = await mysql("nideshop_category").where({
-    "parent_id": categoryId
+  const currentOne = await mysql("nideshop_category").where({
+    "id": categoryId
   }).select();
-
+  const subList = await mysql("nideshop_category").where({
+    "parent_id": currentOne[0].id
+  }).select();
+  data.currentOne = currentOne[0];
+  data.currentOne.subList = subList;
   ctx.body = {
-    "currentCategory": currentCategory
+    "data": data
   }
 }
 
