@@ -44,7 +44,32 @@ async function currentAction(ctx) {
   }
 }
 
+
+//获取分类列表
+//1.需要头部导航包含的分类
+//2.查找导航上分类对应的商品
+async function categoryNav(ctx) {
+  const categoryId = ctx.query.id;
+  //获得当前分类
+  const currentNav = await mysql("nideshop_category").where({
+    "id": categoryId
+  }).select();
+  //获得他的同类
+  const navData = await mysql("nideshop_category").where({
+    "parent_id": currentNav[0].parent_id
+  });
+
+  ctx.body = {
+    navData,
+    currentNav: currentNav[0]
+  }
+
+}
+
+
+
 module.exports = {
   indexAction,
-  currentAction
+  currentAction,
+  categoryNav
 }

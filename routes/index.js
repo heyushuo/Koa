@@ -24,10 +24,20 @@ router.get('/brand/detailaction', controllers.brand.index.detailAction)
 router.get('/category/indexaction', controllers.category.index.indexAction)
 //2.通过分类的id来查询子类接口
 router.get('/category/currentaction', controllers.category.index.currentAction)
+//3.获取导航数据
+router.get('/category/categoryNav', controllers.category.index.categoryNav)
+
+
 /**
  *  商品相关接口
  */
+//1.商品详情接口
 router.get('/goods/detailaction', controllers.goods.index.detailAction)
+//2.获取商品列表
+router.get('/goods/goodsList', controllers.goods.index.goodsList)
+
+
+
 /**
  *  专题接口
  */
