@@ -72,13 +72,17 @@ async function detailAction(ctx) {
 
 async function goodsList(ctx) {
   const categoryId = ctx.query.categoryId;
-
+  //获得商品列表
   const goodsList = await mysql("nideshop_goods").where({
     "category_id": categoryId
   }).select();
-
+  //获得当前分类
+  const currentNav = await mysql("nideshop_category").where({
+    "id": categoryId
+  }).select();
   ctx.body = {
-    data: goodsList
+    data: goodsList,
+    currentNav: currentNav[0]
   }
 }
 
