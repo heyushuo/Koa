@@ -10,9 +10,10 @@ module.exports = async (ctx) => {
     //类型
     const channel = await mysql('nideshop_channel').select();
     //类型
-    const newGoods = await mysql('nideshop_goods').where({
-        "is_new": 1
-    }).limit(5).select();
+    //这几个id有商品详情
+    const newGoods = await mysql('nideshop_goods').whereIn('id', [1181000, 1135002, 1134030, 1134032]).andWhere("is_new", 1).select();
+
+    // const newGoods = await mysql('nideshop_goods').where("is_new", 1).limit(7).select();
     /**
      * 热门商品
      * 选择对象的列字段

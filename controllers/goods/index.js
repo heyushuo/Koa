@@ -72,18 +72,74 @@ async function detailAction(ctx) {
 
 async function goodsList(ctx) {
   const categoryId = ctx.query.categoryId;
-  //获得商品列表
-  const goodsList = await mysql("nideshop_goods").where({
-    "category_id": categoryId
-  }).select();
-  //获得当前分类
-  const currentNav = await mysql("nideshop_category").where({
-    "id": categoryId
-  }).select();
-  ctx.body = {
-    data: goodsList,
-    currentNav: currentNav[0]
+  const isNew = ctx.query.isNew;
+  const isHot = ctx.query.isHot;
+  // const page = this.get('page');
+  // const size = this.get('size');
+  // const sort = this.get('sort');
+  let order = ctx.query.order;
+  let goodsList = [];
+  //----------------------------------------------------------------------
+  if (categoryId) {
+    //获得商品列表
+    goodsList = await mysql("nideshop_goods").where({
+      "category_id": categoryId
+    }).select();
+    //获得当前分类
+    const currentNav = await mysql("nideshop_category").where({
+      "id": categoryId
+    }).select();
+
+    //如果goodsList没有可能这个分类是主分类例如:居家,厨具
+    if (goodsList.length == 0) {
+      //找到与之相关的子类,再找到与子类相关的商品列表
+      let subIds = await mysql("nideshop_category").where({
+        "parent_id": categoryId
+      }).column('id').select();
+      //需要变成数组形式childCategoryIds [1020000,1036002]
+      if (subIds.lenght != 0) {
+        subIds = subIds.map((item) => {
+          return item.id;
+        })
+      }
+      goodsList = await mysql("nideshop_goods").whereIn('category_id', subIds).limit(50).select();
+    }
+    ctx.body = {
+      data: goodsList,
+      currentNav: currentNav[0]
+    }
   }
+
+
+  if (!order) {
+    order = '';
+    orderBy = "id"
+  } else {
+    orderBy = "retail_price"
+  }
+
+
+
+
+  //----------------------------------------------------------------------
+  //新品列表
+  if (isNew) {
+    goodsList = await mysql("nideshop_goods").where('is_new', isNew).orderBy(orderBy, order).select();
+    ctx.body = {
+      data: goodsList,
+    }
+  }
+  //----------------------------------------------------------------------
+  //----------------------------------------------------------------------
+  //热门商品
+  if (isHot) { //desc //asc
+    goodsList = await mysql("nideshop_goods").where('is_hot', isHot).orderBy(orderBy, order).select();
+    ctx.body = {
+      data: goodsList,
+    }
+  }
+  //----------------------------------------------------------------------
+
 }
 
 module.exports = {
