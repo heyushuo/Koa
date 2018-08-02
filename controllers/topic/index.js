@@ -28,7 +28,7 @@ async function detailAction(ctx) {
     }
     const recommendList = await mysql("nideshop_topic").column('id', 'title', 'price_info', 'scene_pic_url', 'subtitle').limit(4).select();
     ctx.body = {
-        "data": data,
+        "data": data[0],
         "recommendList": recommendList
     }
 }
