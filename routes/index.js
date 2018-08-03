@@ -46,11 +46,20 @@ router.get('/topic/listaction', controllers.topic.index.listAction)
 //2.详情加下方四个专题推荐
 router.get('/topic/detailaction', controllers.topic.index.detailAction)
 
-/**
- *  搜索相关接口
- */
 //1.关键词和搜索历史接口
 router.get('/search/indexaction', controllers.search.index.indexAction)
 //2.搜索提示接口
 router.get('/search/helperaction', controllers.search.index.helperAction)
+
+
+
+
+
+/**
+ *  收藏相关接口
+ */
+//1.添加收藏
+router.post('/collect/addcollect', controllers.collect.index.addCollect)
+
+
 module.exports = router
