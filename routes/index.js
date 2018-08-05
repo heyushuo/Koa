@@ -62,4 +62,10 @@ router.get('/search/helperaction', controllers.search.index.helperAction)
 router.post('/collect/addcollect', controllers.collect.index.addCollect)
 
 
+/**
+ *  购物车相关接口
+ */
+router.post('/cart/addCart', controllers.cart.index.addCart)
+router.get('/cart/cartList', controllers.cart.index.cartList)
+
 module.exports = router
