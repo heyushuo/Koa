@@ -17,6 +17,8 @@ router.get('/index/index', controllers.home.index)
 router.get('/brand/listaction', controllers.brand.index.listAction)
 //3.首页品牌制造商直供的详情数据
 router.get('/brand/detailaction', controllers.brand.index.detailAction)
+
+
 /**
  *  分类
  */
@@ -37,7 +39,6 @@ router.get('/goods/detailaction', controllers.goods.index.detailAction)
 router.get('/goods/goodsList', controllers.goods.index.goodsList)
 
 
-
 /**
  *  专题接口
  */
@@ -46,13 +47,18 @@ router.get('/topic/listaction', controllers.topic.index.listAction)
 //2.详情加下方四个专题推荐
 router.get('/topic/detailaction', controllers.topic.index.detailAction)
 
+
+/**
+ * 搜索相关接口
+ */
 //1.关键词和搜索历史接口
 router.get('/search/indexaction', controllers.search.index.indexAction)
 //2.搜索提示接口
 router.get('/search/helperaction', controllers.search.index.helperAction)
-
-
-
+//3.搜索的关键词添加到数据库
+router.get('/search/addHistoryAction', controllers.search.index.addHistoryAction)
+//4.清空搜索历史
+router.get('/search/clearhistoryAction', controllers.search.index.clearhistoryAction)
 
 
 /**
@@ -67,5 +73,6 @@ router.post('/collect/addcollect', controllers.collect.index.addCollect)
  */
 router.post('/cart/addCart', controllers.cart.index.addCart)
 router.get('/cart/cartList', controllers.cart.index.cartList)
+
 
 module.exports = router
