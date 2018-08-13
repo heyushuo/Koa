@@ -28,11 +28,11 @@ async function helperAction(ctx) {
 // async function () {
 
 // }
-await this.model('search_history').add({
-  keyword: keyword,
-  user_id: think.userId,
-  add_time: parseInt(new Date().getTime() / 1000)
-});
+// await this.model('search_history').add({
+//   keyword: keyword,
+//   user_id: think.userId,
+//   add_time: parseInt(new Date().getTime() / 1000)
+// });
 
 //添加搜索历史,add
 
