@@ -28,7 +28,39 @@ async function helperAction(ctx) {
 // async function () {
 
 // }
+await this.model('search_history').add({
+  keyword: keyword,
+  user_id: think.userId,
+  add_time: parseInt(new Date().getTime() / 1000)
+});
+
+//添加搜索历史,add
+
+async function addHistoryAction(ctx) {
+
+  const {
+    openId,
+    keyword
+  } = ctx.request.body
+  await mysql('nideshop_search_history').insert({
+    "user_id": openId,
+    "keyword": keyword,
+    "add_time": new Date().getTime()
+  })
+}
+//清除历史记录
+async function clearhistoryAction(ctx) {
+
+  const openId = ctx.request.body
+  await this.model('search_history').where({
+    user_id: openId
+  }).del();
+  return this.success();
+}
+
 module.exports = {
   indexAction,
-  helperAction
+  helperAction,
+  addHistoryAction,
+  clearhistoryAction
 }
