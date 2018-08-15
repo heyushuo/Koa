@@ -56,9 +56,9 @@ router.get('/search/indexaction', controllers.search.index.indexAction)
 //2.搜索提示接口
 router.get('/search/helperaction', controllers.search.index.helperAction)
 //3.搜索的关键词添加到数据库
-router.get('/search/addHistoryAction', controllers.search.index.addHistoryAction)
+router.post('/search/addhistoryaction', controllers.search.index.addHistoryAction)
 //4.清空搜索历史
-router.get('/search/clearhistoryAction', controllers.search.index.clearhistoryAction)
+router.post('/search/clearhistoryAction', controllers.search.index.clearhistoryAction)
 
 
 /**

@@ -2,6 +2,7 @@ const {
   mysql
 } = require('../../mysql');
 async function indexAction(ctx) {
+  const openId = ctx.query.openId;
   // 默认关键词
   const defaultKeyword = await mysql('nideshop_keywords').where({
     is_default: 1
@@ -11,16 +12,26 @@ async function indexAction(ctx) {
   // const historyKeywordList = await mysql('nideshop_search_history').distinct('keyword').where({
   //   user_id: think.userId
   // }).limit(10).column('keyword');
-
+  const historyData = await mysql('nideshop_search_history').where({
+    "user_id": openId
+  }).limit(10).select();
   ctx.body = {
     "defaultKeyword": defaultKeyword[0],
-    "hotKeywordList": hotKeywordList
+    "hotKeywordList": hotKeywordList,
+    "historyData": historyData
   }
 }
 //搜索的时候匹配搜索相关的
 async function helperAction(ctx) {
   const keyword = ctx.query.keyword;
-  const keywords = await mysql("nideshop_goods").column("name").where("name", 'like', '%' + keyword + '%').limit(10).select();
+  var order = ctx.query.order;
+  if (!order) {
+    order = '';
+    orderBy = "id"
+  } else {
+    orderBy = "retail_price"
+  }
+  const keywords = await mysql("nideshop_goods").orderBy(orderBy, order).column('id', 'name', 'list_pic_url', 'retail_price').where("name", 'like', '%' + keyword + '%').limit(10).select();
   if (keyword) {
     ctx.body = {
       keywords
@@ -49,20 +60,52 @@ async function addHistoryAction(ctx) {
     openId,
     keyword
   } = ctx.request.body
-  await mysql('nideshop_search_history').insert({
+
+  const oldData = await mysql('nideshop_search_history').where({
     "user_id": openId,
-    "keyword": keyword,
-    "add_time": new Date().getTime()
+    "keyword": keyword
   })
+  if (oldData.length == 0) {
+    const data = await mysql('nideshop_search_history').insert({
+      "user_id": openId,
+      "keyword": keyword,
+      "add_time": parseInt(new Date().getTime() / 1000)
+    })
+    if (data) {
+      ctx.body = {
+        data: "success"
+      }
+    } else {
+      ctx.body = {
+        data: "fail"
+      }
+    }
+  } else {
+    ctx.body = {
+      data: "已经有记录了"
+    }
+  }
+
 }
 //清除历史记录
 async function clearhistoryAction(ctx) {
 
-  const openId = ctx.request.body
-  await this.model('search_history').where({
-    user_id: openId
+  const openId = ctx.request.body.openId;
+  console.log(openId);
+
+  const data = await mysql('nideshop_search_history').where({
+    "user_id": openId
   }).del();
-  return this.success();
+  if (data) {
+    ctx.body = {
+      "data": "清除成功"
+    }
+  } else {
+    ctx.body = {
+      "data": null
+    }
+  }
+
 }
 
 module.exports = {
