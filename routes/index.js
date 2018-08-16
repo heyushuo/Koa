@@ -74,5 +74,9 @@ router.post('/collect/addcollect', controllers.collect.index.addCollect)
 router.post('/cart/addCart', controllers.cart.index.addCart)
 router.get('/cart/cartList', controllers.cart.index.cartList)
 
+/**
+ *  收货地址相关接口
+ */
 
+router.post('/address/saveAction', controllers.address.index.saveAction)
 module.exports = router
