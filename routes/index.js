@@ -66,7 +66,10 @@ router.post('/search/clearhistoryAction', controllers.search.index.clearhistoryA
  */
 //1.添加收藏
 router.post('/collect/addcollect', controllers.collect.index.addCollect)
-
+//2.获取收藏列表
+router.get('/collect/listAction', controllers.collect.index.listAction)
+//2.获取收藏列表
+router.get('/collect/deleteCollect', controllers.collect.index.deleteCollect)
 
 /**
  *  购物车相关接口
