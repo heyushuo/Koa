@@ -7,13 +7,14 @@ const {
  * @param {*} ctx
  */
 async function saveAction(ctx) {
-  var addressId = ctx.request.body;
+  var addressId = ctx.request.body.addressId;
   const {
     userName,
     telNumber,
     address,
     detailadress,
-    checked
+    checked,
+    openId
   } = ctx.request.body;
 
   const addressData = {
@@ -26,14 +27,21 @@ async function saveAction(ctx) {
   };
   if (!addressId) {
     //添加地址
-    const data = mysql("nideshop_address").insert(addressData);
+    const data = await mysql("nideshop_address").insert({
+      name: userName,
+      mobile: telNumber,
+      address: address,
+      address_detail: detailadress,
+      user_id: openId,
+      is_default: checked === true ? 1 : 0
+    });
     if (data) {
       ctx.body = {
-        data: "添加成功"
+        data: true
       };
     } else {
       ctx.body = {
-        data: "添加失败"
+        data: false
       };
     }
   } else {
@@ -43,6 +51,15 @@ async function saveAction(ctx) {
         id: addressId
       })
       .update(addressData);
+    if (data) {
+      ctx.body = {
+        data: true
+      };
+    } else {
+      ctx.body = {
+        data: false
+      };
+    }
   }
 }
 
