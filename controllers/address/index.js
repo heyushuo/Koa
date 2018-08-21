@@ -17,14 +17,26 @@ async function saveAction(ctx) {
     openId
   } = ctx.request.body;
 
-  const addressData = {
-    name: userName,
-    mobile: telNumber,
-    address: address,
-    address_detail: detailadress,
-    user_id: openId,
-    is_default: checked === true ? 1 : 0
-  };
+  //如果是默认选中
+  //先在数据库查询是否默认的地址
+  if (checked) {
+    const isDefault = await mysql("nideshop_address").where({
+      user_id: openId,
+      is_default: 1
+    });
+    if (isDefault.length > 0) {
+      await mysql("nideshop_address")
+        .where({
+          user_id: openId,
+          is_default: 1
+        })
+        .update({
+          is_default: 0
+        });
+    }
+  }
+
+
   if (!addressId) {
     //添加地址
     const data = await mysql("nideshop_address").insert({
@@ -33,7 +45,7 @@ async function saveAction(ctx) {
       address: address,
       address_detail: detailadress,
       user_id: openId,
-      is_default: checked === true ? 1 : 0
+      is_default: checked == "true" || checked ? 1 : 0
     });
     if (data) {
       ctx.body = {
@@ -45,12 +57,22 @@ async function saveAction(ctx) {
       };
     }
   } else {
+    // console.log(checked == "true" || checked ? 1 : 0);
+    // console.log(addressId);
+
     //跟新地址
-    const data = mysql("nideshop_address")
+    const data = await mysql("nideshop_address")
       .where({
         id: addressId
       })
-      .update(addressData);
+      .update({
+        name: userName,
+        mobile: telNumber,
+        address: address,
+        address_detail: detailadress,
+        user_id: openId,
+        is_default: checked == "true" || checked ? 1 : 0
+      });
     if (data) {
       ctx.body = {
         data: true
@@ -72,7 +94,7 @@ async function getListAction(ctx) {
   const addressList = await mysql("nideshop_address")
     .where({
       user_id: openId
-    })
+    }).orderBy('is_default', 'desc')
     .select();
 
   ctx.body = {
