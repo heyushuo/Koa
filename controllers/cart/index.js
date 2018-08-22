@@ -76,7 +76,28 @@ async function cartList(ctx) {
 
 }
 
+
+async function deleteAction(ctx) {
+
+  const id = ctx.query.id;
+
+  const data = await mysql("nideshop_cart").where({
+    "id": id,
+  }).del();
+
+  if (data) {
+    ctx.body = {
+      data: true
+    }
+  } else {
+    ctx.body = {
+      data: false
+    }
+  }
+}
+
 module.exports = {
   addCart,
-  cartList
+  cartList,
+  deleteAction
 }

@@ -9,6 +9,7 @@ const {
 async function detailAction(ctx) {
   //ctx.query 获取get请求的参数对象的形式
   const goodsId = ctx.query.id;
+  const openId = ctx.query.openId;
   //商品信息
   const info = await mysql('nideshop_goods').where({
     'id': goodsId
@@ -59,13 +60,37 @@ async function detailAction(ctx) {
     data: commentInfo
   };
 
+  //判断是否收藏过
+  const iscollect = await mysql("nideshop_collect").where({
+    "user_id": openId,
+    "value_id": goodsId
+  }).select();
+  let collected = false;
+  if (iscollect.length > 0) {
+    collected = true
+  }
+  //判断该用户是否在购物车有此商品
+  const oldNumber = await mysql("nideshop_cart").where({
+    "user_id": openId,
+  }).column('number').select();
+  let allnumber = 0;
+
+  if (oldNumber.length > 0) {
+    for (let i = 0; i < oldNumber.length; i++) {
+      const element = oldNumber[i];
+      allnumber += element.number
+    }
+  }
+
   ctx.body = {
     "info": info[0] || [],
     "gallery": gallery,
     "attribute": attribute,
     "issue": issue,
     "comment": comment,
-    "brand": brand[0] || []
+    "brand": brand[0] || [],
+    "collected": collected,
+    "allnumber": allnumber
   }
 }
 
