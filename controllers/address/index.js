@@ -132,11 +132,11 @@ async function deleteAction(ctx) {
     .del();
   if (delData) {
     ctx.body = {
-      data: "删除成功"
+      data: true
     };
   } else {
     ctx.body = {
-      data: "删除失败"
+      data: false
     };
   }
 

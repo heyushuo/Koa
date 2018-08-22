@@ -74,7 +74,9 @@ router.get('/collect/deleteCollect', controllers.collect.index.deleteCollect)
 /**
  *  购物车相关接口
  */
+//1.添加购物车
 router.post('/cart/addCart', controllers.cart.index.addCart)
+//2.购物车列表
 router.get('/cart/cartList', controllers.cart.index.cartList)
 
 /**
