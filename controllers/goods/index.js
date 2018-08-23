@@ -59,6 +59,10 @@ async function detailAction(ctx) {
     count: commentCount[0].number,
     data: commentInfo
   };
+  //大家都在看
+  const productList = await mysql('nideshop_goods').where({
+    'category_id': info[0].category_id
+  }).select();
 
   //判断是否收藏过
   const iscollect = await mysql("nideshop_collect").where({
@@ -89,8 +93,9 @@ async function detailAction(ctx) {
     "issue": issue,
     "comment": comment,
     "brand": brand[0] || [],
+    "productList": productList,
     "collected": collected,
-    "allnumber": allnumber
+    "allnumber": allnumber,
   }
 }
 
