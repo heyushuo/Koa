@@ -26,7 +26,7 @@ async function detailAction(ctx) {
   //常见问题
   const issue = await mysql('nideshop_goods_issue').select();
   //品牌
-  let brand;
+  let brand = [];
   if (info[0].brand_id) {
     brand = await mysql('nideshop_brand').where({
       id: info[0].brand_id

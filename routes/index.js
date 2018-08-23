@@ -83,6 +83,12 @@ router.get('/cart/deleteAction', controllers.cart.index.deleteAction)
 
 
 /**
+ *  订单相关
+ */
+router.post('/order/submitAction', controllers.order.index.submitAction)
+
+router.get('/order/detailAction', controllers.order.index.detailAction)
+/**
  *  收货地址相关接口
  */
 //1.保存和跟新收货地址
