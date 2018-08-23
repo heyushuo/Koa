@@ -26,9 +26,13 @@ async function detailAction(ctx) {
   //常见问题
   const issue = await mysql('nideshop_goods_issue').select();
   //品牌
-  const brand = await mysql('nideshop_brand').where({
-    id: info[0].brand_id
-  }).select();
+  let brand;
+  if (info[0].brand_id) {
+    brand = await mysql('nideshop_brand').where({
+      id: info[0].brand_id
+    }).select();
+  }
+
   //评论条数
   const commentCount = await mysql('nideshop_comment').where({
     value_id: goodsId,
